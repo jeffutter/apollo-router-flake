@@ -2,6 +2,10 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     flake-utils.url = "github:numtide/flake-utils";
+    rust-overlay = {
+      url = "github:oxalica/rust-overlay";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -9,12 +13,27 @@
       # self,
       nixpkgs,
       flake-utils,
+      rust-overlay,
       ...
     }:
     flake-utils.lib.eachDefaultSystem (
       system:
       let
-        pkgs = import nixpkgs { inherit system; };
+        # pkgs = import nixpkgs { inherit system; };
+        overlays = [ (import rust-overlay) ];
+        pkgs = import nixpkgs { inherit system overlays; };
+        # Pin Rust 1.76 - https://github.com/apollographql/router/issues/5587
+        rustVersion = "1.76.0";
+        rust = pkgs.rust-bin.stable.${rustVersion}.default.override {
+          extensions = [
+            "rust-src" # for rust-analyzer
+            "rust-analyzer"
+          ];
+        };
+        rustPlatform = pkgs.makeRustPlatform {
+          cargo = rust;
+          rustc = rust;
+        };
 
         librusty_v8 = (
           let
@@ -36,6 +55,7 @@
 
         router =
           with pkgs;
+
           rustPlatform.buildRustPackage rec {
             pname = "router";
             version = "1.51.0";
