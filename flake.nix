@@ -30,11 +30,6 @@
                 aarch64-darwin = "sha256-Djnuc3l/jQKvBf1aej8LG5Ot2wPT0m5Zo1B24l1UHsM=";
               }
               ."${system}";
-            # postFetch = ''
-            #   mv $out src.gz
-            #   ${pkgs.gzip} -d src.gz
-            #   mv src $out
-            # '';
             meta.version = v8_version;
           }
         );
@@ -43,16 +38,16 @@
           with pkgs;
           rustPlatform.buildRustPackage rec {
             pname = "router";
-            version = "1.47.0";
+            version = "1.51.0";
 
             src = fetchFromGitHub {
               owner = "apollographql";
               repo = pname;
               rev = "v${version}";
-              sha256 = "sha256-vS+HWzp2igJEbpJPBut0h1e8Be9H7Y1gHVD164X25dY=";
+              sha256 = "sha256-U2CL+RwCtDcRdK2DMpcqXEDJvOfYiYWT7IEqTO5ykNk=";
             };
 
-            cargoHash = "sha256-Vb+D0zqpK+TaaW0jWMJXw7251IhrqzUYiGlyD6g50UU=";
+            cargoHash = "sha256-TwVA17/fKmhV3/xmQUopqel5pQ6aF2ew9q90a/aky/o=";
 
             nativeBuildInputs = [
               cmake
