@@ -38,7 +38,7 @@
         librusty_v8 = (
           let
             v8_version = "0.74.3";
-            arch = pkgs.rust.toRustTarget pkgs.stdenv.hostPlatform;
+            arch = pkgs.hostPlatform.rust.rustcTarget;
           in
           pkgs.fetchurl {
             name = "librusty_v8-${v8_version}";
@@ -58,16 +58,21 @@
 
           rustPlatform.buildRustPackage rec {
             pname = "router";
-            version = "1.52.0";
+            version = "1.59.1";
 
             src = fetchFromGitHub {
               owner = "apollographql";
               repo = pname;
               rev = "v${version}";
-              sha256 = "sha256-xbqTMN+n/C/TjmejyHCgw+UwVhsZlBZXm+tJ/EBR8jk=";
+              sha256 = "sha256-D+5ltc7JBy6q7rCfOPhrfw5/TWiq+r07MooedXzbazI=";
             };
 
-            cargoHash = "sha256-IfqLrmuwRtCDM5y+urjT8uvAv16tbIsGo1YHL2PdV5w=";
+            cargoLock = {
+              lockFile = "${src}/Cargo.lock";
+              outputHashes = {
+                "hyper-0.14.31" = "sha256-Hj2EOvieeuZLzXET467C44dqnFeH22YYo//aTzDAepM=";
+              };
+            };
 
             nativeBuildInputs = [
               cmake
