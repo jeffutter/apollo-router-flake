@@ -38,13 +38,13 @@
 
           rustPlatform.buildRustPackage rec {
             pname = "router";
-            version = "1.61.1";
+            version = "1.61.4";
 
             src = fetchFromGitHub {
               owner = "apollographql";
               repo = pname;
               rev = "v${version}";
-              sha256 = "sha256-qZzn6DHUdR49ITMIlxVNrEVhPx/NWmDM/O+ntqRE1PI=";
+              sha256 = "sha256-6jJR2JUcuJniOFyrOqLHhJa0bzk2eanDsmduYwRshrQ=";
             };
 
             cargoLock = {
